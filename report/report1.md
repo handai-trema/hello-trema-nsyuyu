@@ -12,9 +12,12 @@ Bye 0xabc
 呼び出される，switch_disconnectedハンドラに関する記述を追加した．
 具体的には，hello_trema.rbのHelloTremaクラス内に以下の内容を追加した．
 
-```
-def switch_disconnected(dpid)
+```ruby
+class HelloTrema < Trema::Controller
+  ...
+  def switch_disconnected(dpid)
     logger.info "Bye #{dpid.to_hex}"
+  end
 end
 ```
 
@@ -32,6 +35,21 @@ HelloTrema started.
 class HelloTrema < Trema::Controller
   def start(_args)
     logger.info 'HelloTrema started.'
+  end
+  ...
+```
+
+### 解答
+self.classによって，カレントオブジェクトのクラス(Classクラス)を取得することができる．
+また，Classクラスの親クラスであるModuleクラスのnameメソッドを用いて，
+クラス名を文字列で取得することができる．
+つまり，self.class.nameで，自クラス名を取得することができる．
+これらを用いて，hello_trema.rbのHelloTremaクラス内のstart関数の中身を以下の内容に変更し，
+課題を解決した．
+```ruby
+class HelloTrema < Trema::Controller
+  def start(_args)
+    logger.info "#{self.class.name} started."
   end
   ...
 ```
